@@ -76,8 +76,8 @@ func part2() {
     sum := 0
     for scanner.Scan() {
         line := scanner.Text()
-        var first, second int
-    subloop:
+        var first, last int
+    fromStart:
     	for i := 0; i < len(line); i++ {
 			for pattern, n := range replacements {
 				if i+len(pattern) > len(line) {
@@ -85,24 +85,24 @@ func part2() {
 				}
 				if line[i:i+len(pattern)] == pattern {
 					first = n
-					break subloop
+					break fromStart 
 				}
 			}
 		}
 
-     subloop1:
+    fromEnd:
 		for i := len(line) - 1; i >= 0; i-- {
 			for pattern, n := range replacements {
 				if i-len(pattern)+1 < 0 {
 					continue
 				}
 				if line[i-len(pattern)+1:i+1] == pattern {
-					second = n
-					break subloop1
+					last = n
+					break fromEnd 
 				}
 			}
 		}
-		sum += first*10 + second 
+		sum += first*10 + last 
 	}
     fmt.Printf("final sum: %d\n", sum)
 
