@@ -10,6 +10,11 @@ import (
 )
 
 func main() {
+    part2()
+}
+
+
+func part1() {
     f, err := os.Open("input")
     if err != nil {
         log.Fatal(err)
@@ -36,7 +41,73 @@ func main() {
 
     if err := scanner.Err(); err!= nil {
         log.Fatal(err)
+        fmt.Println("here")
+    }
+}
+
+func part2() {
+	replacements := map[string]int{
+		"one":   1,
+		"two":   2,
+		"three": 3,
+		"four":  4,
+		"five":  5,
+		"six":   6,
+		"seven": 7,
+		"eight": 8,
+		"nine":  9,
+        "1":     1,
+		"2":     2,
+		"3":     3,
+		"4":     4,
+		"5":     5,
+		"6":     6,
+		"7":     7,
+		"8":     8,
+		"9":     9,
+	}
+    f, err := os.Open("input")
+    if err != nil {
+        log.Fatal(err)
     }
 
+    defer f.Close()
+    scanner := bufio.NewScanner(f)
+    sum := 0
+    for scanner.Scan() {
+        line := scanner.Text()
+        var first, second int
+    subloop:
+    	for i := 0; i < len(line); i++ {
+			for pattern, n := range replacements {
+				if i+len(pattern) > len(line) {
+					continue
+				}
+				if line[i:i+len(pattern)] == pattern {
+					first = n
+					break subloop
+				}
+			}
+		}
 
+     subloop1:
+		for i := len(line) - 1; i >= 0; i-- {
+			for pattern, n := range replacements {
+				if i-len(pattern)+1 < 0 {
+					continue
+				}
+				if line[i-len(pattern)+1:i+1] == pattern {
+					second = n
+					break subloop1
+				}
+			}
+		}
+		sum += first*10 + second 
+	}
+    fmt.Printf("final sum: %d\n", sum)
+
+    if err := scanner.Err(); err!= nil {
+        log.Fatal(err)
+    }
+    
 }
