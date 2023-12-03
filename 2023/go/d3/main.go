@@ -145,7 +145,67 @@ func part1() {
 	fmt.Printf("Part 1: %d\n", partNumberSum)
 }
 
+func part2() {
+  d, err := parse("input.prod")
+  if err != nil {
+    fmt.Println("error parsing")
+  }
+
+  starNodeIndex := map[string]*Node{}
+	gearRatioSum := 0
+
+	for i, line := range d.Lines {
+    curNumber := ""
+    // Looping through the characters and checking if they are numbers
+    for j := 0; j < len(line); j++ {
+      char := line[j]
+      if char >= '0' && char <= '9' {
+        curNumber += string(char)
+        if j+1 != len(line) {
+            continue
+        }
+        j++
+      }
+      if curNumber == "" {
+        continue
+      }
+      number, err := strconv.Atoi(curNumber)
+      if err != nil {
+        fmt.Errorf("atoi %q; %w", char, err)
+      }
+      for k := j - len(curNumber); k < j; k++ {
+        if val := d.checkAround(i, j, k, curNumber); len(val) > 0 {
+          for _, c := range val {
+            if c.val != '*' {
+              continue
+            }
+            starNode := starNodeIndex[fmt.Sprintf("%d/%d", c.x, c.y)]
+            if starNode == nil {
+              starNode = &Node {
+                Number: -1,
+                x: c.x,
+                y: c.y,
+              }
+              starNodeIndex[fmt.Sprintf("%d/%d", c.x, c.y)] = starNode
+            }
+            starNode.Neighbors = append(starNode.Neighbors, &Node{Number: number, x: j, y: i})
+          }
+          break
+        }
+      }
+      curNumber = ""
+    }
+  }
+  for _, gearPart := range starNodeIndex {
+    if len(gearPart.Neighbors) == 2 {
+      gearRatioSum += gearPart.Neighbors[0].Number * gearPart.Neighbors[1].Number
+    }
+  }
+
+	fmt.Printf("Part 1: %d\n", gearRatioSum)
+}
+
 
 func main() {
-  part1()
+  part2()
 }
