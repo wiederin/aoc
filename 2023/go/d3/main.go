@@ -119,7 +119,6 @@ func part1() {
     for j := 0; j < len(line); j++ {
       char := line[j]
       if char >= '0' && char <= '9' {
-        fmt.Printf("%c is a number\n", char)
         curNumber += string(char)
         if j+1 != len(line) {
             continue
@@ -129,20 +128,16 @@ func part1() {
       if curNumber == "" {
         continue
       }
-      fmt.Println("parse number")
       number, err := strconv.Atoi(curNumber)
       if err != nil {
         fmt.Errorf("atoi %q; %w", char, err)
       }
-      fmt.Println(number)
       for k := j - len(curNumber); k < j; k++ {
         if val := d.checkAround(i, j, k, curNumber); len(val) > 0 {
-          fmt.Println("part")
           partNumberSum += number
           break
         }
       }
-      fmt.Println(partNumberSum)
       curNumber = ""
     }
   }
