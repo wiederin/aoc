@@ -82,7 +82,6 @@ func calculateSimilarityScore(leftNode *Node, rightNode *Node, score *int) {
 	// find number of appearances
 	appearances := 0
 	findNumberOfAppearances(leftNode.data, rightNode, &appearances) 
-	fmt.Println(appearances)
 
 	// multiply be number
 	nodeScore := appearances * leftNode.data
