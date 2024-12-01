@@ -79,13 +79,10 @@ func findNumberOfAppearances(data int, loc *Node, result *int)  {
 }
 
 func calculateSimilarityScore(leftNode *Node, rightNode *Node, score *int) {
-	// find number of appearances
 	appearances := 0
 	findNumberOfAppearances(leftNode.data, rightNode, &appearances) 
 
-	// multiply be number
 	nodeScore := appearances * leftNode.data
-	// add to score
 	*score += nodeScore
 	if leftNode.next != nil {
 		calculateSimilarityScore(leftNode.next, rightNode, score)
