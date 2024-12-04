@@ -88,6 +88,7 @@ func calculateSimilarityScore(leftNode *Node, rightNode *Node, score *int) {
 		calculateSimilarityScore(leftNode.next, rightNode, score)
 	}
 }
+
 func main() {
 	f, err := os.Open("input")
 	if err != nil {
